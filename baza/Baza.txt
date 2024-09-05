@@ -1,0 +1,57 @@
+-- Kreiranje baze podataka
+CREATE DATABASE IF NOT EXISTS RasporedLetova;
+
+-- Korišćenje baze podataka
+USE RasporedLetova;
+
+-- Kreiranje tabele Avion
+CREATE TABLE Avion (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  model_aviona VARCHAR(255),
+  kapacitet INT
+);
+
+-- Kreiranje tabele Let
+CREATE TABLE Let (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  mesto_polaska VARCHAR(255),
+  mesto_dolaska VARCHAR(255),
+  vreme_polaska DATETIME,
+  vreme_dolaska DATETIME,
+  id_aviona INT,
+  FOREIGN KEY (id_aviona) REFERENCES Avion(id)
+);
+
+CREATE TABLE destinacije (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    naziv VARCHAR(255) NOT NULL
+);
+
+-- Kreiranje tabele Korisnik
+CREATE TABLE korisnik (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  ime VARCHAR(255),
+  sifra VARCHAR(255)
+);
+
+CREATE TABLE broj_letova (
+    ID INT PRIMARY KEY,
+    broj_letova INT
+);
+
+INSERT INTO Avion (model_aviona, kapacitet) VALUES
+('Boeing 737', 180),
+('Airbus A320', 150),
+('Embraer E190', 100),
+('Bombardier CRJ900', 90),
+('Boeing 777', 350);
+
+INSERT INTO broj_letova (id, broj_letova) VALUES(1, 0);
+
+INSERT INTO destinacije (naziv) VALUES ('Beograd');
+INSERT INTO destinacije (naziv) VALUES ('London');
+INSERT INTO destinacije (naziv) VALUES ('Pariz');
+INSERT INTO destinacije (naziv) VALUES ('Rim');
+INSERT INTO destinacije (naziv) VALUES ('Atina');
+INSERT INTO destinacije (naziv) VALUES ('Berlin');
+

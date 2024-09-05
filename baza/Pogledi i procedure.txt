@@ -1,0 +1,80 @@
+CREATE VIEW informacije_leta AS
+SELECT
+    l.ID,
+    CONCAT(d1.naziv, ' (', d1.id, ')') AS MESTO_POLASKA,
+    CONCAT(d2.naziv, ' (', d2.id, ')') AS MESTO_DOLASKA,
+    DATE_FORMAT(l.VREME_POLASKA, '%Y-%m-%d') AS DATUM_POLASKA,
+    DATE_FORMAT(l.VREME_DOLASKA, '%Y-%m-%d') AS DATUM_DOLASKA,
+    CONCAT(a.model_aviona, '(', a.id, ')') AS MODEL,
+    a.kapacitet AS KAPACITET
+FROM
+    let l, destinacije d1, destinacije d2, avion a
+WHERE
+    d1.id = l.mesto_polaska
+    AND d2.id = l.mesto_dolaska
+    AND a.id = l.id_aviona;
+
+
+DELIMITER //
+
+CREATE PROCEDURE obrisiLet(
+    IN p_IdZaBrisanje INT
+)
+BEGIN
+    DELETE FROM `Let` WHERE ID = p_IdZaBrisanje;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE izmeniLet(
+    IN p_IdZaIzmenu INT,
+    IN p_NoviIDAviona INT,
+    IN p_NovoMestoDolaska VARCHAR(255),
+    IN p_NovoMestoPolaska VARCHAR(255),
+    IN p_NovoVremeDolaska DATETIME,
+    IN p_NovoVremePolaska DATETIME
+)
+BEGIN
+    UPDATE `let`
+    SET id_aviona = p_NoviIDAviona,
+        mesto_dolaska = p_NovoMestoDolaska,
+        mesto_polaska = p_NovoMestoPolaska,
+        vreme_dolaska = p_NovoVremeDolaska,
+        vreme_polaska = p_NovoVremePolaska
+    WHERE ID = p_IdZaIzmenu;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE dodajLet(
+    IN p_IDAviona INT,
+    IN p_MestoDolaska VARCHAR(255),
+    IN p_MestoPolaska VARCHAR(255),
+    IN p_VremeDolaska DATETIME,
+    IN p_VremePolaska DATETIME
+)
+BEGIN
+    INSERT INTO `Let` (id_aviona, mesto_dolaska, mesto_polaska, vreme_dolaska, vreme_polaska)
+    VALUES (p_IDAviona, p_MestoDolaska, p_MestoPolaska, p_VremeDolaska, p_VremePolaska);
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE dodajKorisnika(
+    IN p_ime VARCHAR(255),
+    IN p_sifra VARCHAR(255)
+)
+BEGIN
+    INSERT INTO korisnik (ime, sifra)
+    VALUES (p_ime, p_sifra);
+END //
+
+DELIMITER ;
+
+
